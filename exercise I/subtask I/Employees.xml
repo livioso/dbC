@@ -4,18 +4,18 @@
 		<name>Stefan Ujamaa</name>
 		<token>stuj</token>
 		<email>stefan@ujamaa.tv</email>
-		<website>stefanujamaa.ch</website>
+		<website>google.com</website>
 	</employee>
 	<employee profilepicture="http://goo.gl/XEYZm1">
 		<name>Ruben Bnall</name>
 		<token>rubn</token>
 		<email>ruben@bnall.sh</email>
-		<website>rubenbnall.com</website>
+		<website>google.com</website>
 	</employee>
 	<employee profilepicture="http://goo.gl/Kk2lF1">
 		<name>Corinna Liscona</name>
 		<token>coli</token>
 		<email>corinna@liscona.be</email>
-		<website>corinnaliscona.be</website>
+		<website>google.com</website>
 	</employee>
 </employees>
