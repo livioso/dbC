@@ -2,12 +2,12 @@
   <xsl:template match="/"> 
   	<html>
   			<body>
-  				<h1>Employees</h1>
-          <table id="employees" class="display">
+  				<h1>Employees Of The Month</h1>
+          <table id="employees">
             <thead>
               <tr>
-                <th>Name</th>
-                <th>Hackfresse</th>
+                <th>Full Name</th>
+                <th>Profile Picture</th>
               </tr>
             </thead>
             <tbody>
@@ -22,7 +22,10 @@
                     </a>
                   </td>
                   <td>
-                    <img alt="Mountain View" style="width:90px;height:100px">
+                    <img style="width:90px;height:100px">
+                      <xsl:attribute name="alt">
+                          <xsl:value-of select="concat('This is', name)"/>
+                        </xsl:attribute>
                         <xsl:attribute name="src">
                           <xsl:value-of select="./@profilepicture"/>
                         </xsl:attribute>
