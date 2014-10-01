@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<employees xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="Employees.xsd">
+	<employee profilepicture="http://goo.gl/p4Cwkw">
+		<name>Stefan Ujamaa</name>
+		<token>stuj</token>
+		<email>stefan@ujamaa.tv</email>
+		<website>google.com</website>
+	</employee>
+	<employee profilepicture="http://goo.gl/XEYZm1">
+		<name>Ruben Bnall</name>
+		<token>rubn</token>
+		<email>ruben@bnall.sh</email>
+		<website>google.com</website>
+	</employee>
+	<employee profilepicture="http://goo.gl/Kk2lF1">
+		<name>Corinna Liscona</name>
+		<token>coli</token>
+		<email>corinna@liscona.be</email>
+		<website>google.com</website>
+	</employee>
+</employees>
