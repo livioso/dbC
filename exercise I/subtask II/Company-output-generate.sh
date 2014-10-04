@@ -1,3 +1,3 @@
 #!/bin/bash
 
-xsltproc Employees.xsl Employees.xml > Employees-output.html
+xsltproc Company.xsl Company.xml > Company-output.html

@@ -1,21 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<employees xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="Employees.xsd">
-	<employee profilepicture="http://goo.gl/p4Cwkw">
-		<name>Stefan Ujamaa</name>
-		<token>stuj</token>
-		<email>stefan@ujamaa.tv</email>
-		<website>google.com</website>
-	</employee>
-	<employee profilepicture="http://goo.gl/XEYZm1">
-		<name>Ruben Bnall</name>
-		<token>rubn</token>
-		<email>ruben@bnall.sh</email>
-		<website>google.com</website>
-	</employee>
-	<employee profilepicture="http://goo.gl/Kk2lF1">
-		<name>Corinna Liscona</name>
-		<token>coli</token>
-		<email>corinna@liscona.be</email>
-		<website>google.com</website>
-	</employee>
-</employees>
+<company>
+	<!-- Employees --> 
+	<employees xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="Company.xsd">
+		<employee id="5a238360" profilepicture="http://goo.gl/p4Cwkw">
+			<name>Stefan Ujamaa</name>
+			<token>stuj</token>
+			<email>stefan@ujamaa.tv</email>
+		</employee>
+		<employee id="6a8982e0" profilepicture="http://goo.gl/XEYZm1">
+			<name>Ruben Bnall</name>
+			<token>rubn</token>
+			<email>ruben@bnall.sh</email>
+		</employee>
+		<employee id="725a1750" profilepicture="http://goo.gl/Kk2lF1">
+			<name>Corinna Liscona</name>
+			<token>coli</token>
+			<email>corinna@liscona.be</email>
+		</employee>
+	</employees>
+	<!-- Projects --> 
+	<projects>
+		<project name="Firefly">
+			<members>
+				<member idref="5a238360" />
+				<member idref="6a8982e0" />
+				<member idref="725a1750" />
+			</members>
+		</project>
+		<project name="Doge">
+			<members>
+				<member idref="5a238360" />
+				<member idref="725a1750" />
+			</members>
+		</project>
+	</projects>
+</company>
