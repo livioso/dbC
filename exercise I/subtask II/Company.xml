@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<company>
+<company xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<!-- Employees --> 
-	<employees xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="Company.xsd">
+	<employees>
 		<employee id="5a238360" profilepicture="http://goo.gl/p4Cwkw">
 			<name>Stefan Ujamaa</name>
 			<token>stuj</token>
@@ -20,14 +20,25 @@
 	</employees>
 	<!-- Projects --> 
 	<projects>
-		<project name="Firefly">
+		<project name="Modern Wrench" plannedhours="100">
 			<members>
 				<member idref="5a238360" />
 				<member idref="6a8982e0" />
 				<member idref="725a1750" />
 			</members>
 		</project>
-		<project name="Doge">
+		<project name="Forsaken Tuna" plannedhours="100">
+			<members>
+				<member idref="5a238360" />
+				<member idref="725a1750" />
+			</members>
+		</project>
+		<project name="Brave Laser" plannedhours="100">
+			<members>
+				<member idref="5a238360" />
+			</members>
+		</project>
+		<project name="Supersonic Beam" plannedhours="100">
 			<members>
 				<member idref="5a238360" />
 				<member idref="725a1750" />
