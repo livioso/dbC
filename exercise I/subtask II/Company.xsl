@@ -42,6 +42,8 @@
               </xsl:for-each>
             </tbody>
           </table>
+          <xsl:value-of select="concat('Number of Projects: ', count(company/projects/project))"/> <br />
+          <xsl:value-of select="concat('Total working hours: ', sum(company/projects/project/@plannedhours))"/>
   			</body>
   	</html>
   </xsl:template>
