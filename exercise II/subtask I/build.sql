@@ -130,13 +130,3 @@ SELECT thisGuy, COUNT(*) as withCount FROM (
 	INNER JOIN employees AS coworkersname ON coworkersname.id = cwpa.employee_id
 	WHERE empa.employee_id != cwpa.employee_id) mp
 GROUP BY thisGuy;
-
-
-#SELECT employeesname.name AS thisGuy, COUNT(employeesname.name) as workWithSoManyPeople
-#FROM projectsAssignment empa
-#INNER JOIN projectsAssignment cwpa ON cwpa.project_id = empa.project_id
-#INNER JOIN employees AS employeesname ON employeesname.id = empa.employee_id
-#INNER JOIN employees AS coworkersname ON coworkersname.id = cwpa.employee_id
-#WHERE empa.employee_id != cwpa.employee_id
-#GROUP BY employeesname.name
-#ORDER BY workWithSoManyPeople DESC
