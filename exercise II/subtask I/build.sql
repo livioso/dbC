@@ -1,12 +1,15 @@
 CREATE DATABASE IF NOT EXISTS dbProject2;
 USE dbProject2;
 
+CREATE DATABASE IF NOT EXISTS dbProject2;
+USE dbProject2;
+
 
 CREATE TABLE IF NOT EXISTS employees (
-	id integer NOT NULL AUTO_INCREMENT, 
-    name varchar(100) NOT NULL,
-	email varchar(100) UNIQUE NOT NULL,
-	PRIMARY KEY(id)
+    id INTEGER NOT NULL AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    PRIMARY KEY (id)
 );
 
 
@@ -21,12 +24,14 @@ CREATE TABLE IF NOT EXISTS projects (
 
 
 CREATE TABLE IF NOT EXISTS projectsAssignment (
-	id integer NOT NULL AUTO_INCREMENT,
-    project_id integer NOT NULL,
-    employee_id integer NOT NULL,
+    id INTEGER NOT NULL AUTO_INCREMENT,
+    project_id INTEGER NOT NULL,
+    employee_id INTEGER NOT NULL,
     PRIMARY KEY (id),
-	FOREIGN KEY (project_id) REFERENCES projects(id),
-    FOREIGN KEY (employee_id) REFERENCES employees(id)
+    FOREIGN KEY (project_id)
+        REFERENCES projects (id),
+    FOREIGN KEY (employee_id)
+        REFERENCES employees (id)
 );
 
 
@@ -81,7 +86,7 @@ VALUES 	(1, 1),
         
 
 # task I d) a)
-# give all projects where Yves was part of the team
+# give all projects where Kristina was part of the team
 SELECT projects.titel FROM projectsAssignment
 INNER JOIN projects ON projectsAssignment.project_id = projects.id
 WHERE employee_id = (SELECT id from employees where name = "Kristina Meyer");
@@ -102,3 +107,36 @@ INNER JOIN projects ON projectsAssignment.project_id = projects.id
 INNER JOIN employees ON projectsAssignment.employee_id = employees.id
 GROUP BY employees.name
 ORDER BY numberOfProjects DESC;
+
+
+# task II a)
+# who works with who in which project?
+SELECT employeesname.name AS thisGuy, coworkersname.name AS worksWith, projects.titel AS inProject
+FROM projectsAssignment empa
+INNER JOIN projectsAssignment cwpa ON cwpa.project_id = empa.project_id
+INNER JOIN projects ON projects.id = empa.project_id
+INNER JOIN employees AS employeesname ON employeesname.id = empa.employee_id
+INNER JOIN employees AS coworkersname ON coworkersname.id = cwpa.employee_id
+WHERE empa.employee_id != cwpa.employee_id;
+
+
+# task II b)
+SELECT thisGuy, COUNT(*) as withCount FROM (
+	SELECT DISTINCT employeesname.name AS thisGuy, coworkersname.name AS worksWith
+	FROM projectsAssignment empa
+	INNER JOIN projectsAssignment cwpa ON cwpa.project_id = empa.project_id
+	INNER JOIN projects ON projects.id = empa.project_id
+	INNER JOIN employees AS employeesname ON employeesname.id = empa.employee_id
+	INNER JOIN employees AS coworkersname ON coworkersname.id = cwpa.employee_id
+	WHERE empa.employee_id != cwpa.employee_id) mp
+GROUP BY thisGuy;
+
+
+#SELECT employeesname.name AS thisGuy, COUNT(employeesname.name) as workWithSoManyPeople
+#FROM projectsAssignment empa
+#INNER JOIN projectsAssignment cwpa ON cwpa.project_id = empa.project_id
+#INNER JOIN employees AS employeesname ON employeesname.id = empa.employee_id
+#INNER JOIN employees AS coworkersname ON coworkersname.id = cwpa.employee_id
+#WHERE empa.employee_id != cwpa.employee_id
+#GROUP BY employeesname.name
+#ORDER BY workWithSoManyPeople DESC
