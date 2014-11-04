@@ -1,0 +1,14 @@
+digraph G {
+	"Guy Elliott <1>"->"Monkey 2000 <1>"
+	"Franklin Mills <2>"->"Monkey 2000 XS <2>"
+	"Franklin Mills <2>"->"Donkey 3000 NG <3>"
+	"Franklin Mills <2>"->"Monkey 2000 <1>"
+	"Bernard Robertson <3>"->"Monkey 2000 XS <2>"
+	"Bernard Robertson <3>"->"Donkey 3000 NG <3>"
+	"Bernard Robertson <3>"->"Monkey 2000 <1>"
+	"Amber Santos <4>"->"Monkey 2000 <1>"
+	"Amber Santos <4>"->"Donkey 3000 NG <3>"
+	"Kristina Meyer <5>"->"Monkey 2000 XS <2>"
+	"Kristina Meyer <5>"->"Donkey 3000 NG <3>"
+	"John Deprecated <6>"->"Monkey 2000 <1>"
+}
