@@ -1,37 +1,34 @@
 CREATE DATABASE IF NOT EXISTS dbProject2;
 USE dbProject2;
 
-CREATE DATABASE IF NOT EXISTS dbProject2;
-USE dbProject2;
-
 
 CREATE TABLE IF NOT EXISTS employees (
-    id INTEGER NOT NULL AUTO_INCREMENT,
-    name VARCHAR(100) NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL,
-    PRIMARY KEY (id)
+	id INTEGER NOT NULL AUTO_INCREMENT,
+	name VARCHAR(100) NOT NULL,
+	email VARCHAR(100) UNIQUE NOT NULL,
+	PRIMARY KEY (id)
 );
 
 
 CREATE TABLE IF NOT EXISTS projects (
 	id integer NOT NULL AUTO_INCREMENT,
 	titel varchar(100) NOT NULL,
-    startdate date NOT NULL,
-    enddate date NOT NULL,
-    revenueInCHF integer NOT NULL,
-    PRIMARY KEY(id)
+	startdate date NOT NULL,
+	enddate date NOT NULL,
+	revenueInCHF integer NOT NULL,
+	PRIMARY KEY(id)
 );
 
 
 CREATE TABLE IF NOT EXISTS projectsAssignment (
-    id INTEGER NOT NULL AUTO_INCREMENT,
-    project_id INTEGER NOT NULL,
-    employee_id INTEGER NOT NULL,
-    PRIMARY KEY (id),
-    FOREIGN KEY (project_id)
-        REFERENCES projects (id),
-    FOREIGN KEY (employee_id)
-        REFERENCES employees (id)
+	id INTEGER NOT NULL AUTO_INCREMENT,
+	project_id INTEGER NOT NULL,
+	employee_id INTEGER NOT NULL,
+	PRIMARY KEY (id),
+	FOREIGN KEY (project_id)
+	REFERENCES projects (id),
+	FOREIGN KEY (employee_id)
+	REFERENCES employees (id)
 );
 
 
@@ -72,7 +69,7 @@ VALUES ("Donkey 3000 NG", '2010-05-01', '2020-05-01', 9890000);
 #			(SELECT id from projects WHERE titel = 'Donkey 3000 NG'));
 INSERT INTO projectsAssignment (project_id, employee_id)
 VALUES 	(1, 1),
-		(1, 2),
+        (1, 2),
         (1, 3),
         (1, 4),
         (1, 6),
