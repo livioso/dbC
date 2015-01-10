@@ -28,14 +28,11 @@ public class test {
 		College FHNW = new College();
 		FHNW.setCollegeName("Fachhochschule Nordwerstschweiz");
 		
-		Student s1 = new Student();
-		s1.setStudentName("Fabian Affolter");
+		Student s1 = new Student("Fabian", "Affolter");
 				
-		Student s2 = new Student();
-		s2.setStudentName("Alexander Meier");
+		Student s2 = new Student("Alexander", "Meier");
 		
-		Student s3 = new Student();
-		s3.setStudentName("Nelson Allende");
+		Student s3 = new Student("Nelson", "Allende");
 		
 		s1.setCollege(FHNW);
 		s2.setCollege(FHNW);

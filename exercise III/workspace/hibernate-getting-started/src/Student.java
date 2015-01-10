@@ -7,8 +7,13 @@ import javax.persistence.ManyToOne;
 
 
 @Entity
-public class Student {
+public class Student extends AbstractPerson {
 
+	public Student(String firstName, String lastName) {
+		super(firstName, lastName);
+		
+		setStudentName(firstName + " " + lastName);
+	}
 	private int studentId;
 	private String studentName;
 	private College college;
