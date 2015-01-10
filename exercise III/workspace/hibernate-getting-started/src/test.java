@@ -32,12 +32,18 @@ public class test {
 		Flightattendant s3 = new Flightattendant("Nelson", "Allende", "nall201203");
 		Pilot p1 = new Pilot("Sepp", "Blatter", "sblat201004");
 		
+		Flight f = new Flight("f01", "Paris");
+		f.addCrewMember(s1);
+		f.addCrewMember(p1);
+		s1.addFlight(f);
+		
+		
+		
 		session.save(s1);
 		session.save(s2);
 		session.save(s3);
 		session.save(p1);
-		
-		Flight 
+		session.save(f);
 		
 		session.getTransaction().commit();
 	

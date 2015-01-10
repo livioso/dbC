@@ -1,9 +1,9 @@
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.Column;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import javax.persistence.*;
 
 @Entity
 @Table(name = "Crews")
@@ -20,10 +20,20 @@ public abstract class Crew {
 	@Column(name = "LASTNAME")
 	protected String mLastName;
 	
+	@ManyToMany(cascade = {CascadeType.ALL})
+	@JoinTable(name="Flight_Crew", 
+		joinColumns={@JoinColumn(name="EMPLOYEE_ID")}, 
+	    inverseJoinColumns={@JoinColumn(name="FLIGHT_ID")})
+	private Set<Flight> flightAssignments = new HashSet<Flight>();
+	
 	public Crew(String firstName, String lastName, String employeeID) {
 		this.mFirstName = firstName;
 		this.mLastName = lastName;
 		this.mEmployeeID = employeeID;
+	}
+	
+	public void addFlight(Flight flight) {
+		flightAssignments.add(flight);
 	}
 	
 	String getEmployeeID() {

@@ -1,10 +1,13 @@
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.persistence.*;
 
+import java.util.Set;
+
 @Entity
-@Table(name = "Flights")  
+@Table(name="Flights")
 public class Flight {
 
 	@Id
@@ -14,12 +17,8 @@ public class Flight {
 	@Column(name = "DESTINATION") 
 	private String mDestination;
 	
-	//@ManyToMany(mappedBy = "Flight")  
-	@ManyToMany(cascade = {CascadeType.ALL})
-	@JoinTable(name="Flights", 
-		joinColumns={@JoinColumn(name="FLIGHT_ID")}, 
-	    inverseJoinColumns={@JoinColumn(name="EMPLOYEE_ID")})
-	private List<Crew> mFlightCrew = new ArrayList<>();
+	@ManyToMany(mappedBy="flightAssignments")
+	private Set<Crew> mFlightCrew = new HashSet<>();
 	
 	public Flight (String flightIdentifier, String destination) {
 		this.mFlightIdentifier = flightIdentifier;
@@ -34,7 +33,11 @@ public class Flight {
 		return mDestination;
 	}
 	
-	public List<Crew> getFlightCrew () {
+	public void addCrewMember (Crew crewMember) {
+		mFlightCrew.add(crewMember);
+	}
+	
+	public Set<Crew> getFlightCrew () {
 		return mFlightCrew;
 	}
 }
