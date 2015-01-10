@@ -12,7 +12,8 @@ public class test {
 	public static void main(String[] args) {
 
 		Configuration config = new Configuration();
-		config.addAnnotatedClass(College.class);
+		config.addAnnotatedClass(AbstractPerson.class);
+		config.addAnnotatedClass(Professor.class);
 		config.addAnnotatedClass(Student.class);
 		config.configure("hibernate.cfg.xml");
 		
@@ -25,23 +26,23 @@ public class test {
 		Session session = factory.getCurrentSession();
 		session.beginTransaction();
 		
-		College FHNW = new College();
-		FHNW.setCollegeName("Fachhochschule Nordwerstschweiz");
+		//College FHNW = new College();
+		//FHNW.setCollegeName("Fachhochschule Nordwerstschweiz");
 		
 		Student s1 = new Student("Fabian", "Affolter");
-				
 		Student s2 = new Student("Alexander", "Meier");
-		
 		Student s3 = new Student("Nelson", "Allende");
+		Professor p1 = new Professor("Sepp", "Blatter");
 		
-		s1.setCollege(FHNW);
+		/*s1.setCollege(FHNW);
 		s2.setCollege(FHNW);
 		s3.setCollege(FHNW);
-		
-		session.save(FHNW);
+		*/
+		//session.save(FHNW);
 		session.save(s1);
 		session.save(s2);
 		session.save(s3);
+		session.save(p1);
 		
 		session.getTransaction().commit();
 	
