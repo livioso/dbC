@@ -6,20 +6,28 @@ import javax.persistence.InheritanceType;
 import javax.persistence.Column;
 
 @Entity
-@Table(name = "PERSON")
+@Table(name = "Crews")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class AbstractPerson {
+public abstract class Crew {
 
 	@Id
+	@Column(name = "EMPLOYEE_ID")
+	protected String mEmployeeID;
+	
 	@Column(name = "FIRSTNAME")
 	protected String mFirstName;
 	
 	@Column(name = "LASTNAME")
 	protected String mLastName;
 	
-	public AbstractPerson(String firstName, String lastName) {
+	public Crew(String firstName, String lastName, String employeeID) {
 		this.mFirstName = firstName;
 		this.mLastName = lastName;
+		this.mEmployeeID = employeeID;
+	}
+	
+	String getEmployeeID() {
+		return mEmployeeID;
 	}
 	
 	String getFirstName () { 

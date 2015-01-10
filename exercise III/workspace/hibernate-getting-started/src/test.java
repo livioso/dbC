@@ -12,9 +12,10 @@ public class test {
 	public static void main(String[] args) {
 
 		Configuration config = new Configuration();
-		config.addAnnotatedClass(AbstractPerson.class);
-		config.addAnnotatedClass(Professor.class);
-		config.addAnnotatedClass(Student.class);
+		config.addAnnotatedClass(Crew.class);
+		config.addAnnotatedClass(Pilot.class);
+		config.addAnnotatedClass(Flightattendant.class);
+		config.addAnnotatedClass(Flight.class);
 		config.configure("hibernate.cfg.xml");
 		
 		new SchemaExport(config).create(true,true);
@@ -26,23 +27,17 @@ public class test {
 		Session session = factory.getCurrentSession();
 		session.beginTransaction();
 		
-		//College FHNW = new College();
-		//FHNW.setCollegeName("Fachhochschule Nordwerstschweiz");
+		Flightattendant s1 = new Flightattendant("Fabian", "Affolter", "faff201402");
+		Flightattendant s2 = new Flightattendant("Alexander", "Meier", "amei201304");
+		Flightattendant s3 = new Flightattendant("Nelson", "Allende", "nall201203");
+		Pilot p1 = new Pilot("Sepp", "Blatter", "sblat201004");
 		
-		Student s1 = new Student("Fabian", "Affolter");
-		Student s2 = new Student("Alexander", "Meier");
-		Student s3 = new Student("Nelson", "Allende");
-		Professor p1 = new Professor("Sepp", "Blatter");
-		
-		/*s1.setCollege(FHNW);
-		s2.setCollege(FHNW);
-		s3.setCollege(FHNW);
-		*/
-		//session.save(FHNW);
 		session.save(s1);
 		session.save(s2);
 		session.save(s3);
 		session.save(p1);
+		
+		Flight 
 		
 		session.getTransaction().commit();
 	

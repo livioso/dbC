@@ -7,15 +7,15 @@ import javax.persistence.*;
 
 
 @Entity
-@Table(name="PROFESSOR")
+@Table(name="Pilots")
 @AttributeOverrides({
     @AttributeOverride(name="mFirstName", column=@Column(name="FIRSTNAME")),
     @AttributeOverride(name="mLastName", column=@Column(name="LASTNAME"))
 })
-public class Professor extends AbstractPerson {
+public class Pilot extends Crew {
 
-	public Professor(String firstName, String lastName) {
-		super(firstName, lastName);
+	public Pilot(String firstName, String lastName, String employeeID) {
+		super(firstName, lastName, employeeID);
 	}
 
 }

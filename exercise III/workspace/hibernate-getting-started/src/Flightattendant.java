@@ -7,27 +7,20 @@ import javax.persistence.*;
 
 
 @Entity
-@Table(name="STUDENT")
+@Table(name="Flightattendants")
 @AttributeOverrides({
     @AttributeOverride(name="mFirstName", column=@Column(name="FIRSTNAME")),
     @AttributeOverride(name="mLastName", column=@Column(name="LASTNAME"))
 })
-public class Student extends AbstractPerson {
+public class Flightattendant extends Crew {
 
-	public Student(String firstName, String lastName) {
-		super(firstName, lastName);
+	public Flightattendant(String firstName, String lastName, String employeeID) {
+		super(firstName, lastName, employeeID);
 		
 		setStudentName(firstName + " " + lastName);
 	}
-	private int studentId;
 	private String studentName;
 	
-	public int getStudentId() {
-		return studentId;
-	}
-	public void setStudentId(int studentId) {
-		this.studentId = studentId;
-	}
 	public String getStudentName() {
 		return studentName;
 	}
