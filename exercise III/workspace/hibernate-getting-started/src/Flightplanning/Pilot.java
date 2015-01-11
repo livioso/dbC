@@ -1,6 +1,6 @@
 package Flightplanning;
-import javax.persistence.*;
 
+import javax.persistence.*;
 
 @Entity
 @Table(name="Pilots")
@@ -10,8 +10,19 @@ import javax.persistence.*;
 })
 public class Pilot extends Crew {
 
+	@Column(name = "PILOTLICENCENUMBER") 
+	private String mPilotLicenceNumber = "unknown"; 
+	
 	public Pilot(String firstName, String lastName, String employeeID) {
 		super(firstName, lastName, employeeID);
 	}
 
+	public void setPilotLicenceNumber (String pilotLicenceNumber) {
+		mPilotLicenceNumber = pilotLicenceNumber;
+	}
+	
+	public String getPilotLicenceNumber () {
+		return mPilotLicenceNumber;
+	}
+	
 }
