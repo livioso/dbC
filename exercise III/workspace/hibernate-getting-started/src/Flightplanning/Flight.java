@@ -15,14 +15,18 @@ public class Flight {
 	@Column(name = "DESTINATION") 
 	private String mDestination;
 	
+	@Column(name = "ORIGIN") 
+	private String mOrigin;
+	
 	@ManyToMany(cascade = {CascadeType.ALL})
 	@JoinTable(name="Flights_Crews", 
-		joinColumns={@JoinColumn(name="EMPLOYEE_ID")}, 
-	    inverseJoinColumns={@JoinColumn(name="FLIGHT_ID")})
+		joinColumns={@JoinColumn(name="FLIGHT_ID")}, 
+	    inverseJoinColumns={@JoinColumn(name="EMPLOYEE_ID")})
 	private Set<Crew> mFlightCrew = new HashSet<>();
 	
-	public Flight (String flightIdentifier, String destination) {
+	public Flight (String flightIdentifier, String origin, String destination) {
 		this.mFlightIdentifier = flightIdentifier;
+		this.mOrigin = origin;
 		this.mDestination = destination;
 	}
 	

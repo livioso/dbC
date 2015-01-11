@@ -23,6 +23,5 @@ public class Pilot extends Crew {
 	
 	public String getPilotLicenceNumber () {
 		return mPilotLicenceNumber;
-	}
-	
+	}	
 }
