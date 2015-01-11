@@ -1,6 +1,5 @@
-import java.util.ArrayList;
+package Flightplanning;
 import java.util.HashSet;
-import java.util.List;
 
 import javax.persistence.*;
 
@@ -17,7 +16,10 @@ public class Flight {
 	@Column(name = "DESTINATION") 
 	private String mDestination;
 	
-	@ManyToMany(mappedBy="flightAssignments")
+	@ManyToMany(cascade = {CascadeType.ALL})
+	@JoinTable(name="Flights_Crews", 
+		joinColumns={@JoinColumn(name="EMPLOYEE_ID")}, 
+	    inverseJoinColumns={@JoinColumn(name="FLIGHT_ID")})
 	private Set<Crew> mFlightCrew = new HashSet<>();
 	
 	public Flight (String flightIdentifier, String destination) {
@@ -35,6 +37,10 @@ public class Flight {
 	
 	public void addCrewMember (Crew crewMember) {
 		mFlightCrew.add(crewMember);
+	}
+	
+	public void removeCrewMember (Crew crewMember) {
+		mFlightCrew.remove(crewMember);
 	}
 	
 	public Set<Crew> getFlightCrew () {

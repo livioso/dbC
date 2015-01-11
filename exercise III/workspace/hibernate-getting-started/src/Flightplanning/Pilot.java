@@ -1,8 +1,4 @@
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
+package Flightplanning;
 import javax.persistence.*;
 
 

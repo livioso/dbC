@@ -1,3 +1,4 @@
+package Flightplanning;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
