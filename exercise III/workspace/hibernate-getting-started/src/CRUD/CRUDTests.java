@@ -3,10 +3,9 @@ package CRUD;
 import static org.junit.Assert.*;
 
 import java.util.List;
+import java.util.Set;
 
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import org.hibernate.*;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
@@ -22,7 +21,8 @@ import Flightplanning.Flightattendant;
 import Flightplanning.Pilot;
 
 
-public class CRUDTest {
+/** Create, Read, Update and Delete Test Cases. :-) */
+public class CRUDTests {
 	
 	/** This is the one session we work on */
 	Session session;
@@ -46,19 +46,20 @@ public class CRUDTest {
 		// setup test data:
 		// so every test case has the 
 		// same environment work with.
-		setupFLightplanningTestEnvironment();
+		createFLightplanningTestEnvironment();
 		
 	}
 
 	/** This tests verifies that the 
-	 *  setup / insertion of the test data
-	 *  was successful.
+	 *  use case 'create' works properly
+	 *  see createFLightplanningTestEnvironment()
 	 */
 	@Test
 	@SuppressWarnings("unchecked")
-	public void testSetup() {
+	public void testCreate() {
 		
 		session.beginTransaction();
+		
 		
 		// get & check all the crew members
 		List<Crew> allCrews = session.createQuery("from Crew").list();
@@ -75,6 +76,41 @@ public class CRUDTest {
 		
 		assertTrue(allFlights.contains(new Flight("PH90102", "Zurich", "London")));
 		assertTrue(allFlights.contains(new Flight("ETD12", "Zurich", "Dubai")));
+		
+		
+		// check the flight assignment for PH90102
+		Query queryPH90102 = session.createQuery("from Flight WHERE FLIGHT_ID = :flightid");
+		queryPH90102.setParameter("flightid", "PH90102");
+		
+		// only one flight with that id expected
+		List<Flight> flightPH90102 = queryPH90102.list();
+		assertEquals(1, flightPH90102.size());
+		
+		// verify flight crew is correct
+		Set<Crew> flightcrewPH90102 = flightPH90102.get(0).getFlightCrew();
+		assertEquals(3, flightcrewPH90102.size());
+		
+		for(Crew each : flightcrewPH90102) {
+			System.out.println(each.getEmployeeID());
+		}
+		
+		
+		// check the flight assignment for PH90102
+		Query queryETD12 = session.createQuery("from Flight WHERE FLIGHT_ID = :flightid");
+		queryETD12.setParameter("flightid", "ETD12");
+				
+		// only one flight with that id expected
+		List<Flight> flightETD12 = queryETD12.list();
+		assertEquals(1, flightETD12.size());
+				
+		// verify flight crew is correct
+		Set<Crew> flightcrewETD12 = flightETD12.get(0).getFlightCrew();
+		assertEquals(4, flightcrewETD12.size());
+				
+		for(Crew each : flightcrewETD12) {
+			System.out.println(each.getEmployeeID());
+		}
+		
 		
 		session.getTransaction().commit();
 	}
@@ -101,7 +137,7 @@ public class CRUDTest {
 		return factory.openSession();	
 	}
 	
-	public void setupFLightplanningTestEnvironment () {
+	public void createFLightplanningTestEnvironment () {
 		
 		session.beginTransaction();
 		
@@ -123,6 +159,7 @@ public class CRUDTest {
 		// ... Zurich -> Dubai
 		Flight flightZurichDubai = new Flight("ETD12", "Zurich", "Dubai");
 		flightZurichDubai.addCrewMember(flightAttendedNelson);
+		flightZurichDubai.addCrewMember(flightAttendedFabian);
 		flightZurichDubai.addCrewMember(flightAttendedAlex);
 		flightZurichDubai.addCrewMember(pilotMarius);
 		
