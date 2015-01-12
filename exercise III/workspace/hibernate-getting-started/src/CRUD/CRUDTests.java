@@ -10,6 +10,7 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -48,8 +49,20 @@ public class CRUDTests {
 		// same environment work with.
 		createFLightplanningTestEnvironment();
 		
+		// convenience - begins a
+		// new transaction and commits
+		// it in the tearDown method.
+		session.beginTransaction();
 	}
 
+	@After
+	public void tearDown () {
+		
+		// corresponding part to beginTransaction 
+		// see setup - change simultaneously!
+		session.getTransaction().commit();
+	}
+	
 	/** This tests verifies that the 
 	 *  use case 'create' works properly
 	 *  see createFLightplanningTestEnvironment()
@@ -57,9 +70,6 @@ public class CRUDTests {
 	@Test
 	@SuppressWarnings("unchecked")
 	public void testCreate() {
-		
-		session.beginTransaction();
-		
 		
 		// get & check all the crew members
 		List<Crew> allCrews = session.createQuery("from Crew").list();
@@ -111,8 +121,21 @@ public class CRUDTests {
 			System.out.println(each.getEmployeeID());
 		}
 		
+	}
+	
+	@Test
+	public void testRead () {
+		Query query = session.createQuery("from Flight WHERE FLIGHT_ID = :flightid ");
+	}
+	
+	@Test
+	public void testUpdate () {
 		
-		session.getTransaction().commit();
+	}
+	
+	@Test
+	public void testDelete () {
+		
 	}
 	
 	public Session createSession () {
