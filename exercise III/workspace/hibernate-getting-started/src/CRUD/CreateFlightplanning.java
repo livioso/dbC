@@ -1,11 +1,11 @@
 package CRUD;
 
+import java.util.List;
+
 import org.hibernate.Session;
 
 import CRUD.Helper.SessionBuilderFlightplanning;
-import Flightplanning.Flight;
-import Flightplanning.Flightattendant;
-import Flightplanning.Pilot;
+import Flightplanning.*;
 
 
 public class CreateFlightplanning {
@@ -45,6 +45,12 @@ public class CreateFlightplanning {
 		session.save(flightAttendedNelson);
 		session.save(pilotSepp);
 		session.save(pilotMarius);
+		
+		List<Crew> allFlights = session.createQuery("from Crew").list();
+		
+		for(Crew each : allFlights) {
+			System.out.println(each);
+		}
 		
 		session.getTransaction().commit();
 	}
