@@ -23,15 +23,31 @@ public abstract class Crew {
 		this.mEmployeeID = employeeID;
 	}
 	
-	String getEmployeeID() {
+	public String getEmployeeID() {
 		return mEmployeeID;
 	}
 	
-	String getFirstName () { 
+	public String getFirstName () { 
 		return mFirstName;
 	}
 	
-	String getLastName () {
+	public String getLastName () {
 		return mLastName;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+	       
+		if (!(obj instanceof Crew)) {
+			return false;
+		}
+		if (obj == this) {
+			return true;
+		}
+
+		Crew rhs = (Crew) obj;
+		boolean isEqual = this.mEmployeeID.compareTo(rhs.mEmployeeID) == 0;
+		
+		return isEqual;
 	}
 }

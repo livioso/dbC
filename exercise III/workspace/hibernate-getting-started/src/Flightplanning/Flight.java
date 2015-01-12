@@ -1,6 +1,7 @@
 package Flightplanning;
 
 import javax.persistence.*;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -48,5 +49,21 @@ public class Flight {
 	
 	public Set<Crew> getFlightCrew () {
 		return mFlightCrew;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+	       
+		if (!(obj instanceof Flight)) {
+			return false;
+		}
+		if (obj == this) {
+			return true;
+		}
+
+		Flight rhs = (Flight) obj;
+		boolean isEqual = this.mFlightIdentifier.compareTo(rhs.mFlightIdentifier) == 0;
+		
+		return isEqual;
 	}
 }
