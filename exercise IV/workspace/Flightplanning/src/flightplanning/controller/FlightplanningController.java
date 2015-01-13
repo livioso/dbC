@@ -1,10 +1,11 @@
 package flightplanning.controller;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.hibernate.*;
+import com.db4o.*;
 
 import flightplanning.model.Airplane;
 import flightplanning.model.Crew;
@@ -15,48 +16,26 @@ public class FlightplanningController implements IFlightplanningController{
 	/** This string gets set when we did not found something as ID */
 	private final String NOT_FOUND = "NOT_FOUND";
 	
-	/** Session to be used.*/
-	private Session mSession;
+	/** Database to be used.*/
+	private ObjectContainer mObjectContainer;
 	
-	public FlightplanningController (Session session) {
-		this.mSession = session;
+	public FlightplanningController (ObjectContainer objectContainer) {
+		this.mObjectContainer = objectContainer;
 	}
 	
-	/** convenience - begins a
-	 *  new transaction and commits
-	 *  it in the commitTransaction method. */
-	private void beginTransaction () {
-		
-		mSession.beginTransaction();
-	}
-	
-	/** corresponding part to beginTransaction
-	 *  see beginTransaction.
-	 *  change simultaneously! */
 	private void commitTransaction () {
-		
-		mSession.getTransaction().commit();
-		mSession.flush();
+		mObjectContainer.commit();
 	}
 
 	public void addFlight (Flight flightToAdd) {
-		
-		beginTransaction();
-		mSession.save(flightToAdd);
 		commitTransaction();
 	}
 	
 	public void addCrew (Crew crewToAdd) {
-		
-		beginTransaction();
-		mSession.save(crewToAdd);
 		commitTransaction();		
 	}
 	
 	public void addAirplane (Airplane airplaneToAdd) {
-		
-		beginTransaction();
-		mSession.save(airplaneToAdd);
 		commitTransaction();		
 	}
 	
@@ -65,12 +44,15 @@ public class FlightplanningController implements IFlightplanningController{
 		
 		Set<Crew> crewOfFlightWithId = new HashSet<>();
 		
-		beginTransaction();
+		/*beginTransaction();
 		// query and search for particular flight
 		Query query = mSession.createQuery("from Flight WHERE FLIGHT_ID = :flightid");
 		query.setParameter("flightid", withFlightId);
 		List<Flight> flightsWithId = query.list();
 		commitTransaction();
+		*/
+		
+		List<Flight> flightsWithId = new ArrayList<>();;
 		
 		if(!flightsWithId.isEmpty()) {
 			crewOfFlightWithId = flightsWithId.get(0).getFlightCrew();
@@ -82,9 +64,7 @@ public class FlightplanningController implements IFlightplanningController{
 	@SuppressWarnings("unchecked")
 	public List<Crew> getCrewAll () {
 		
-		beginTransaction();
-		List<Crew> crewAll = mSession.createQuery("from Crew").list();
-		commitTransaction();
+		List<Crew> crewAll = new ArrayList<>();
 		
 		return crewAll;
 	}
@@ -92,8 +72,7 @@ public class FlightplanningController implements IFlightplanningController{
 	@SuppressWarnings("unchecked")
 	public List<Flight> getFlightAll () {
 		
-		beginTransaction();
-		List<Flight> flightAll = mSession.createQuery("from Flight").list();
+		List<Flight> flightAll = new ArrayList<>();
 		commitTransaction();
 		
 		return flightAll;
@@ -104,12 +83,15 @@ public class FlightplanningController implements IFlightplanningController{
 		
 		Flight flight = new Flight(NOT_FOUND, "NA", "NA", null);
 		
+		/*
 		beginTransaction();
 		Query query = mSession.createQuery("from Flight WHERE FLIGHT_ID = :flightid");
 		query.setParameter("flightid", withFlightId);
 		List<Flight> flightsWithId = query.list();
 		commitTransaction();
+		*/
 		
+		List<Flight> flightsWithId = new ArrayList<>();
 		if(!flightsWithId.isEmpty()) {
 			flight = flightsWithId.get(0);
 		}
@@ -123,7 +105,8 @@ public class FlightplanningController implements IFlightplanningController{
 		
 		// if found update, if not just do nothing
 		if(!foundFlight.getFlightIdentifier().equals(NOT_FOUND)) {
-			beginTransaction();
+			
+			/*beginTransaction();
 			
 			foundFlight.updateOrigin(newOrigin);
 			foundFlight.updateDestination(newDestination);
@@ -132,24 +115,24 @@ public class FlightplanningController implements IFlightplanningController{
 			//  object is detached 
 			mSession.saveOrUpdate(foundFlight);
 			
-			commitTransaction();
+			commitTransaction(); */
 		}
 	}
 	
 	public void deleteFlight (String withFlightId) {
 		
-		beginTransaction();
-		Query query = mSession.createQuery("delete from Flight where FLIGHT_ID = :flightid");
+		/*Query query = mSession.createQuery("delete from Flight where FLIGHT_ID = :flightid");
 		query.setParameter("flightid", withFlightId);
 		query.executeUpdate();
-		commitTransaction();
+		commitTransaction(); */
+		
 	}
 	
 	public void deleteEverything () {
 		
-		beginTransaction();
+		/*beginTransaction();
 		mSession.createQuery("delete from Flight").executeUpdate();
 		mSession.createQuery("delete from Crew").executeUpdate();
-		commitTransaction();
+		commitTransaction(); */
 	}
 }
