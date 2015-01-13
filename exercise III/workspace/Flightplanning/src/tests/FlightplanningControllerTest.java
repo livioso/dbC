@@ -64,11 +64,44 @@ public class FlightplanningControllerTest {
 	
 	@Test
 	public void testCreateFlight() {
+		
 		// get & check all the flights
 		List<Flight> allFlights = classUnderTest.getFlightAll();
 				
 		assertTrue(allFlights.contains(new Flight("PH90102", "Zurich", "London", null)));
 		assertTrue(allFlights.contains(new Flight("ETD12", "Zurich", "Dubai", null)));
+	}
+	
+	@Test
+	public void testCreateSingleFlight() {
+		
+		// delete all existing flights (1 DB call)
+		classUnderTest.deleteFlightAll();
+				
+		Flight newFlight = new Flight("CH021A", "Zurich", "London", null);
+				
+		// add a new airplane (1 DB call)
+		classUnderTest.addFlight(newFlight);
+				
+		// get & check all the flights (1 DB call)
+		List<Flight> allFlights = classUnderTest.getFlightAll();
+		assertTrue(allFlights.contains(newFlight));
+	}
+	
+	@Test
+	public void testCreateSingleCrew() {
+		
+		// delete all existing crew (1 DB call)
+		classUnderTest.deleteCrewAll();
+				
+		Pilot pilotAlex = new Pilot("Alex", "Blatter", "albl");
+				
+		// add a new crew (1 DB call)
+		classUnderTest.addCrew(pilotAlex);
+				
+		// get & check all the crew (1 DB call)
+		List<Crew> allFlights = classUnderTest.getCrewAll();
+		assertTrue(allFlights.contains(pilotAlex));
 	}
 	
 	@Test
@@ -91,6 +124,38 @@ public class FlightplanningControllerTest {
 	}
 	
 	@Test
+	public void testCreateSingleFlightCrews () {
+		
+		// delete all the flights and crews (2 DB calls)
+		classUnderTest.deleteFlightAll();
+		classUnderTest.deleteCrewAll();
+		
+		
+		Pilot pilotAlex = new Pilot("Alex", "Blatter", "albl");
+		Flightattendant fatOlivia = new Flightattendant("Oliva", "Buschor", "olbu");
+		
+		// add a new crew (1 DB call)
+		classUnderTest.addCrew(pilotAlex);
+		classUnderTest.addCrew(fatOlivia);
+		
+		
+		Flight newFlight = new Flight("CH021A", "Zurich", "London", null);
+		newFlight.addCrewMember(pilotAlex);
+		newFlight.addCrewMember(fatOlivia);
+		
+		// add a new airplane (1 DB call)
+		classUnderTest.addFlight(newFlight);
+		
+		// verify flight crew is correct (1 DB call)
+		Set<Crew> flightcrew = classUnderTest.getCrewOfFlight("CH021A");
+		assertEquals(2, flightcrew.size());
+		
+		for(Crew each : flightcrew) {
+			System.out.println(each.getEmployeeID());
+		}
+	}
+	
+	@Test
 	public void testGetFlight () {
 		
 		Flight flight = classUnderTest.getFlight("ETD12");
@@ -106,11 +171,11 @@ public class FlightplanningControllerTest {
 	public void testGetAirplane () {
 		
 		Flight flight = classUnderTest.getFlight("ETD12");
+		
 		Airplane assignedAirplane = flight.getAssignedAirplane();
 		assertEquals("German Wings", assignedAirplane.getAircraftOwner());
 		assertEquals("DE9021", assignedAirplane.getAircraftRegistrationID());
 		assertEquals("Airbus A320", assignedAirplane.getAircraftType());
-		
 	}
 	
 	@Test
@@ -126,6 +191,27 @@ public class FlightplanningControllerTest {
 		
 		// should not throw exception here
 		classUnderTest.updateFlight("NonExistingFlightId", "", "");
+	}
+	
+	@Test
+	public void testUpdateSingleFlight () {
+		
+		// delete all existing flights (1 DB call)
+		classUnderTest.deleteFlightAll();
+						
+		Flight newFlight = new Flight("CH021A", "Zurich", "London", null);
+						
+		// add a new airplane (1 DB call)
+		classUnderTest.addFlight(newFlight);
+		
+		// lets change destination and origin of this flight (2 DB call)
+		classUnderTest.updateFlight("CH021A", "Genf", "Doha");
+		
+		// lets change destination and origin of this flight (1 DB call)
+		Flight updatedFlight = classUnderTest.getFlight("CH021A");
+		assertEquals("CH021A", updatedFlight.getFlightIdentifier());
+		assertEquals("Genf", updatedFlight.getOrigin());
+		assertEquals("Doha", updatedFlight.getDestination());
 	}
 	
 	@Test
@@ -204,6 +290,6 @@ public class FlightplanningControllerTest {
 	}
 	
 	public void tearDownFlightplanningTestEnvironment () {
-		classUnderTest.deleteEverything();
+		
 	}
 }

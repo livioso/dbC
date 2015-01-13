@@ -145,10 +145,14 @@ public class FlightplanningController implements IFlightplanningController{
 		commitTransaction();
 	}
 	
-	public void deleteEverything () {
-		
+	public void deleteFlightAll () {
 		beginTransaction();
 		mSession.createQuery("delete from Flight").executeUpdate();
+		commitTransaction();
+	}
+	
+	public void deleteCrewAll () {
+		beginTransaction();
 		mSession.createQuery("delete from Crew").executeUpdate();
 		commitTransaction();
 	}

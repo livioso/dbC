@@ -18,6 +18,6 @@ public interface IFlightplanningController {
 	public Flight getFlight (String withFlightId);
 	public void updateFlight (String withFlightId, String newOrigin, String newDestination);
 	public void deleteFlight (String withFlightId);
-	public void deleteEverything ();
-	
+	public void deleteFlightAll ();
+	public void deleteCrewAll ();
 }
