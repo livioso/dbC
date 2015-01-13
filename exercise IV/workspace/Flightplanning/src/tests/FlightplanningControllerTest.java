@@ -5,14 +5,12 @@ import static org.junit.Assert.*;
 import java.util.List;
 import java.util.Set;
 
-import org.hibernate.*;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.service.ServiceRegistry;
-import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import com.db4o.Db4o;
+import com.db4o.ObjectContainer;
 
 import flightplanning.controller.FlightplanningController;
 import flightplanning.model.Airplane;
@@ -25,13 +23,16 @@ import flightplanning.model.Pilot;
 /** Create, Read, Update and Delete Test Cases. :-) */
 public class FlightplanningControllerTest {
 	
-	FlightplanningController classUnderTest;
+	private FlightplanningController classUnderTest;
+	private ObjectContainer mObjectContainer;
 	
 	@Before
 	public void setUp () {
 		
+		mObjectContainer = createObjectContainer();
+		
 		// instantiate the class under test before each test case
-		classUnderTest = new FlightplanningController(createSession());
+		classUnderTest = new FlightplanningController(mObjectContainer);
 		
 		// setup test data:
 		// so every test case has the 
@@ -43,6 +44,8 @@ public class FlightplanningControllerTest {
 	public void tearDown () {
 		// tear down test data that we added in setup
 		tearDownFlightplanningTestEnvironment();
+		
+		mObjectContainer.close();
 	}
 	
 	/** This tests verifies that the 
@@ -139,27 +142,9 @@ public class FlightplanningControllerTest {
 		assertFalse(allFlights.contains(new Flight("ETD12", "Zurich", "Dubai", null)));
 	}
 	
-	public Session createSession () {
-		
-		Configuration config = new Configuration();
-		
-		config.addAnnotatedClass(Crew.class);
-		config.addAnnotatedClass(Pilot.class);
-		config.addAnnotatedClass(Flightattendant.class);
-		config.addAnnotatedClass(Flight.class);
-		config.addAnnotatedClass(Airplane.class);
-		config.configure("hibernate.cfg.xml");
-		
-		// some exception handling here would be awesome
-		new SchemaExport(config).create(true,true);
-		
-		ServiceRegistry serviceRegistry =
-			new StandardServiceRegistryBuilder().applySettings(config.getProperties()).build();
-		SessionFactory factory = config.buildSessionFactory(serviceRegistry);
-
-		// first one should be openSession and not getSession
-		// see: https://stackoverflow.com/questions/2378572/hibernate-session-is-closed
-		return factory.openSession();	
+	@SuppressWarnings("deprecation")
+	public ObjectContainer createObjectContainer () {
+		 return Db4o.openFile("flightplanningTestEnvironment.data");
 	}
 	
 	public void createFlightplanningTestEnvironment () {

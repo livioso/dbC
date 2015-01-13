@@ -1,20 +1,11 @@
 package flightplanning.model;
 
-import javax.persistence.*;
-
-@Entity
-@Table(name = "Crews")
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class Crew {
 
-	@Id
-	@Column(name = "EMPLOYEE_ID")
 	protected String mEmployeeID;
 	
-	@Column(name = "FIRSTNAME")
 	protected String mFirstName;
 	
-	@Column(name = "LASTNAME")
 	protected String mLastName;
 	
 	public Crew(String firstName, String lastName, String employeeID) {
