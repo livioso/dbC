@@ -29,16 +29,6 @@ public class FlightplanningControllerTest {
 	
 	FlightplanningController classUnderTest;
 	
-	@BeforeClass
-	static public void beforeClass () { 
-		
-	}
-	
-	@AfterClass
-	static public void afterClass () {
-
-	}
-	
 	@Before
 	public void setUp () {
 		

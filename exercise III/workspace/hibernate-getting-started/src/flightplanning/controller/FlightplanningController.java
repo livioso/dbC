@@ -10,7 +10,7 @@ import flightplanning.model.Airplane;
 import flightplanning.model.Crew;
 import flightplanning.model.Flight;
 
-public class FlightplanningController {
+public class FlightplanningController implements IFlightplanningController{
 	
 	/** This string gets set when we did not found something as ID */
 	private final String NOT_FOUND = "NOT_FOUND";
