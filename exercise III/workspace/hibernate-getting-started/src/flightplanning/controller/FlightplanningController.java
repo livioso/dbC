@@ -6,6 +6,7 @@ import java.util.Set;
 
 import org.hibernate.*;
 
+import flightplanning.model.Airplane;
 import flightplanning.model.Crew;
 import flightplanning.model.Flight;
 
@@ -52,6 +53,13 @@ public class FlightplanningController {
 		commitTransaction();		
 	}
 	
+	public void addAirplane (Airplane airplaneToAdd) {
+		
+		beginTransaction();
+		mSession.save(airplaneToAdd);
+		commitTransaction();		
+	}
+	
 	@SuppressWarnings("unchecked")
 	public Set<Crew> getCrewOfFlight (String withFlightId) {
 		
@@ -94,7 +102,7 @@ public class FlightplanningController {
 	@SuppressWarnings("unchecked")
 	public Flight getFlight (String withFlightId) {
 		
-		Flight flight = new Flight(NOT_FOUND, "NA", "NA");
+		Flight flight = new Flight(NOT_FOUND, "NA", "NA", null);
 		
 		beginTransaction();
 		Query query = mSession.createQuery("from Flight WHERE FLIGHT_ID = :flightid");
@@ -134,6 +142,14 @@ public class FlightplanningController {
 		Query query = mSession.createQuery("delete from Flight where FLIGHT_ID = :flightid");
 		query.setParameter("flightid", withFlightId);
 		query.executeUpdate();
+		commitTransaction();
+	}
+	
+	public void deleteEverything () {
+		
+		beginTransaction();
+		mSession.createQuery("delete from Flight").executeUpdate();
+		mSession.createQuery("delete from Crew").executeUpdate();
 		commitTransaction();
 	}
 }

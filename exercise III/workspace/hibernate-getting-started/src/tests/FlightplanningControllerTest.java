@@ -17,6 +17,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import flightplanning.controller.FlightplanningController;
+import flightplanning.model.Airplane;
 import flightplanning.model.Crew;
 import flightplanning.model.Flight;
 import flightplanning.model.Flightattendant;
@@ -52,7 +53,8 @@ public class FlightplanningControllerTest {
 
 	@After
 	public void tearDown () {
-		
+		// tear down test data that we added in setup
+		tearDownFlightplanningTestEnvironment();
 	}
 	
 	/** This tests verifies that the 
@@ -77,8 +79,8 @@ public class FlightplanningControllerTest {
 		// get & check all the flights
 		List<Flight> allFlights = classUnderTest.getFlightAll();
 				
-		assertTrue(allFlights.contains(new Flight("PH90102", "Zurich", "London")));
-		assertTrue(allFlights.contains(new Flight("ETD12", "Zurich", "Dubai")));
+		assertTrue(allFlights.contains(new Flight("PH90102", "Zurich", "London", null)));
+		assertTrue(allFlights.contains(new Flight("ETD12", "Zurich", "Dubai", null)));
 	}
 	
 	@Test
@@ -113,6 +115,17 @@ public class FlightplanningControllerTest {
 	}
 	
 	@Test
+	public void testGetAirplane () {
+		
+		Flight flight = classUnderTest.getFlight("ETD12");
+		Airplane assignedAirplane = flight.getAssignedAirplane();
+		assertEquals("German Wings", assignedAirplane.getAircraftOwner());
+		assertEquals("DE9021", assignedAirplane.getAircraftRegistrationID());
+		assertEquals("Airbus A320", assignedAirplane.getAircraftType());
+		
+	}
+	
+	@Test
 	public void testUpdateFlight () {
 		
 		// lets change destination and origin
@@ -134,8 +147,8 @@ public class FlightplanningControllerTest {
 		classUnderTest.deleteFlight("ETD12");
 		
 		List<Flight> allFlights = classUnderTest.getFlightAll();
-		assertTrue(allFlights.contains(new Flight("PH90102", "Zurich", "London")));
-		assertFalse(allFlights.contains(new Flight("ETD12", "Zurich", "Dubai")));
+		assertTrue(allFlights.contains(new Flight("PH90102", "Zurich", "London", null)));
+		assertFalse(allFlights.contains(new Flight("ETD12", "Zurich", "Dubai", null)));
 	}
 	
 	public Session createSession () {
@@ -146,6 +159,7 @@ public class FlightplanningControllerTest {
 		config.addAnnotatedClass(Pilot.class);
 		config.addAnnotatedClass(Flightattendant.class);
 		config.addAnnotatedClass(Flight.class);
+		config.addAnnotatedClass(Airplane.class);
 		config.configure("hibernate.cfg.xml");
 		
 		// some exception handling here would be awesome
@@ -171,14 +185,18 @@ public class FlightplanningControllerTest {
 		Pilot pilotSepp = new Pilot("Sepp", "Blatter", "sblat201004");
 		Pilot pilotMarius = new Pilot("Marius", "Conti", "maconti");
 		
+		//... create a few airplanes
+		Airplane airplaneAirbusA380 = new Airplane("CH9289", "Swiss", "Airbus A380");
+		Airplane airplaneAirbusA320 = new Airplane("DE9021", "German Wings", "Airbus A320");
+		
 		// ... create some flights: Zurich -> London
-		Flight flightZurichLondon = new Flight("PH90102", "Zurich", "London");
+		Flight flightZurichLondon = new Flight("PH90102", "Zurich", "London", airplaneAirbusA380);
 		flightZurichLondon.addCrewMember(flightAttendedFabian);
 		flightZurichLondon.addCrewMember(flightAttendedAlex);
 		flightZurichLondon.addCrewMember(pilotSepp);
 		
 		// ... Zurich -> Dubai
-		Flight flightZurichDubai = new Flight("ETD12", "Zurich", "Dubai");
+		Flight flightZurichDubai = new Flight("ETD12", "Zurich", "Dubai", airplaneAirbusA320);
 		flightZurichDubai.addCrewMember(flightAttendedNelson);
 		flightZurichDubai.addCrewMember(flightAttendedFabian);
 		flightZurichDubai.addCrewMember(flightAttendedAlex);
@@ -193,5 +211,11 @@ public class FlightplanningControllerTest {
 		classUnderTest.addCrew(flightAttendedNelson);
 		classUnderTest.addCrew(pilotSepp);
 		classUnderTest.addCrew(pilotMarius);
+		classUnderTest.addAirplane(airplaneAirbusA380);
+		classUnderTest.addAirplane(airplaneAirbusA320);
+	}
+	
+	public void tearDownFlightplanningTestEnvironment () {
+		classUnderTest.deleteEverything();
 	}
 }

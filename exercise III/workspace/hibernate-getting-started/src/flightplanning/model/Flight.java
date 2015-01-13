@@ -19,16 +19,20 @@ public class Flight {
 	@Column(name = "ORIGIN") 
 	private String mOrigin;
 	
+	@OneToOne(mappedBy="mFlight", cascade=CascadeType.ALL)
+    private Airplane mAssingedAirplane;
+	
 	@ManyToMany(cascade = {CascadeType.ALL})
 	@JoinTable(name="Flights_Crews", 
 		joinColumns={@JoinColumn(name="FLIGHT_ID")}, 
 	    inverseJoinColumns={@JoinColumn(name="EMPLOYEE_ID")})
 	private Set<Crew> mFlightCrew = new HashSet<>();
 	
-	public Flight (String flightIdentifier, String origin, String destination) {
+	public Flight (String flightIdentifier, String origin, String destination, Airplane assingedAirplane) {
 		this.mFlightIdentifier = flightIdentifier;
 		this.mOrigin = origin;
 		this.mDestination = destination;
+		this.mAssingedAirplane = assingedAirplane;
 	}
 	
 	public void updateDestination (String newDestination) {
@@ -61,6 +65,10 @@ public class Flight {
 	
 	public Set<Crew> getFlightCrew () {
 		return mFlightCrew;
+	}
+	
+	public Airplane getAssignedAirplane () {
+		return mAssingedAirplane;
 	}
 	
 	@Override
