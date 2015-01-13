@@ -1,4 +1,4 @@
-package CRUD;
+package tests;
 
 import static org.junit.Assert.*;
 
@@ -16,17 +16,17 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import Flightplanning.Crew;
-import Flightplanning.Flight;
-import Flightplanning.Flightattendant;
-import Flightplanning.Pilot;
+import flightplanning.controller.FlightplanningController;
+import flightplanning.model.Crew;
+import flightplanning.model.Flight;
+import flightplanning.model.Flightattendant;
+import flightplanning.model.Pilot;
 
 
 /** Create, Read, Update and Delete Test Cases. :-) */
-public class CRUDTests {
+public class FlightplanningControllerTest {
 	
-	/** This is the one session we work on */
-	Session session;
+	FlightplanningController classUnderTest;
 	
 	@BeforeClass
 	static public void beforeClass () { 
@@ -41,26 +41,18 @@ public class CRUDTests {
 	@Before
 	public void setUp () {
 		
-		// reset session - drops tables
-		session = createSession();
+		// instantiate the class under test before each test case
+		classUnderTest = new FlightplanningController(createSession());
 		
 		// setup test data:
 		// so every test case has the 
 		// same environment work with.
 		createFLightplanningTestEnvironment();
-		
-		// convenience - begins a
-		// new transaction and commits
-		// it in the tearDown method.
-		session.beginTransaction();
 	}
 
 	@After
 	public void tearDown () {
 		
-		// corresponding part to beginTransaction 
-		// see setup - change simultaneously!
-		session.getTransaction().commit();
 	}
 	
 	/** This tests verifies that the 
@@ -68,73 +60,48 @@ public class CRUDTests {
 	 *  see createFLightplanningTestEnvironment()
 	 */
 	@Test
-	@SuppressWarnings("unchecked")
-	public void testCreate() {
+	public void testCreateCrew() {
 		
 		// get & check all the crew members
-		List<Crew> allCrews = session.createQuery("from Crew").list();
+		List<Crew> allCrews = classUnderTest.getCrewAll();
 		
 		assertTrue(allCrews.contains(((Crew) new Flightattendant("Fabian", "Affolter", "faff201402"))));
 		assertTrue(allCrews.contains(((Crew) new Flightattendant("Alex", "Meier", "amei201304"))));
 		assertTrue(allCrews.contains(((Crew) new Flightattendant("Nelson", "Allende", "nall201203"))));
 		assertTrue(allCrews.contains(((Crew) new Pilot("Sepp", "Blatter", "sblat201004"))));
 		assertTrue(allCrews.contains(((Crew) new Pilot("Marius", "Conti", "maconti"))));
-		
-		
+	}
+	
+	@Test
+	public void testCreateFlight() {
 		// get & check all the flights
-		List<Flight> allFlights = session.createQuery("from Flight").list();
-		
+		List<Flight> allFlights = classUnderTest.getFlightAll();
+				
 		assertTrue(allFlights.contains(new Flight("PH90102", "Zurich", "London")));
 		assertTrue(allFlights.contains(new Flight("ETD12", "Zurich", "Dubai")));
-		
-		
-		// check the flight assignment for PH90102
-		Query queryPH90102 = session.createQuery("from Flight WHERE FLIGHT_ID = :flightid");
-		queryPH90102.setParameter("flightid", "PH90102");
-		
-		// only one flight with that id expected
-		List<Flight> flightPH90102 = queryPH90102.list();
-		assertEquals(1, flightPH90102.size());
-		
+	}
+	
+	@Test
+	public void testCreateFlightCrews () {
 		// verify flight crew is correct
-		Set<Crew> flightcrewPH90102 = flightPH90102.get(0).getFlightCrew();
+		Set<Crew> flightcrewPH90102 = classUnderTest.getCrewOfFlight("PH90102");
 		assertEquals(3, flightcrewPH90102.size());
 		
 		for(Crew each : flightcrewPH90102) {
 			System.out.println(each.getEmployeeID());
 		}
 		
-		
-		// check the flight assignment for PH90102
-		Query queryETD12 = session.createQuery("from Flight WHERE FLIGHT_ID = :flightid");
-		queryETD12.setParameter("flightid", "ETD12");
-				
-		// only one flight with that id expected
-		List<Flight> flightETD12 = queryETD12.list();
-		assertEquals(1, flightETD12.size());
-				
 		// verify flight crew is correct
-		Set<Crew> flightcrewETD12 = flightETD12.get(0).getFlightCrew();
+		Set<Crew> flightcrewETD12 = classUnderTest.getCrewOfFlight("ETD12");
 		assertEquals(4, flightcrewETD12.size());
 				
 		for(Crew each : flightcrewETD12) {
 			System.out.println(each.getEmployeeID());
 		}
-		
 	}
 	
 	@Test
 	public void testRead () {
-		Query query = session.createQuery("from Flight WHERE FLIGHT_ID = :flightid ");
-	}
-	
-	@Test
-	public void testUpdate () {
-		
-	}
-	
-	@Test
-	public void testDelete () {
 		
 	}
 	
@@ -162,8 +129,6 @@ public class CRUDTests {
 	
 	public void createFLightplanningTestEnvironment () {
 		
-		session.beginTransaction();
-		
 		// first we instantiate a few flight attendants
 		Flightattendant flightAttendedFabian = new Flightattendant("Fabian", "Affolter", "faff201402");
 		Flightattendant flightAttendedAlex = new Flightattendant("Alex", "Meier", "amei201304");
@@ -187,14 +152,13 @@ public class CRUDTests {
 		flightZurichDubai.addCrewMember(pilotMarius);
 		
 		// ... and let Hibernate persist those objects
-		session.save(flightZurichLondon);
-		session.save(flightZurichDubai);
-		session.save(flightAttendedFabian);
-		session.save(flightAttendedAlex);
-		session.save(flightAttendedNelson);
-		session.save(pilotSepp);
-		session.save(pilotMarius);
-		
-		session.getTransaction().commit();
+		classUnderTest.addFlight(flightZurichLondon);
+		classUnderTest.addFlight(flightZurichDubai);
+		classUnderTest.addFlight(flightZurichLondon);
+		classUnderTest.addCrew(flightAttendedFabian);
+		classUnderTest.addCrew(flightAttendedAlex);
+		classUnderTest.addCrew(flightAttendedNelson);
+		classUnderTest.addCrew(pilotSepp);
+		classUnderTest.addCrew(pilotMarius);
 	}
 }

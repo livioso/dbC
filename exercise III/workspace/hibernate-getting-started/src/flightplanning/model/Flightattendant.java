@@ -1,4 +1,4 @@
-package Flightplanning;
+package flightplanning.model;
 
 import javax.persistence.*;
 
