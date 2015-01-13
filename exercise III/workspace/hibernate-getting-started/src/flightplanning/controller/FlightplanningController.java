@@ -11,6 +11,9 @@ import flightplanning.model.Flight;
 
 public class FlightplanningController {
 	
+	/** This string gets set when we did not found something as ID */
+	private final String NOT_FOUND = "NOT_FOUND";
+	
 	/** Session to be used.*/
 	private Session mSession;
 	
@@ -32,6 +35,7 @@ public class FlightplanningController {
 	private void commitTransaction () {
 		
 		mSession.getTransaction().commit();
+		mSession.flush();
 	}
 
 	public void addFlight (Flight flightToAdd) {
@@ -85,5 +89,51 @@ public class FlightplanningController {
 		commitTransaction();
 		
 		return flightAll;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Flight getFlight (String withFlightId) {
+		
+		Flight flight = new Flight(NOT_FOUND, "NA", "NA");
+		
+		beginTransaction();
+		Query query = mSession.createQuery("from Flight WHERE FLIGHT_ID = :flightid");
+		query.setParameter("flightid", withFlightId);
+		List<Flight> flightsWithId = query.list();
+		commitTransaction();
+		
+		if(!flightsWithId.isEmpty()) {
+			flight = flightsWithId.get(0);
+		}
+		
+		return flight;
+	}
+	
+	public void updateFlight (String withFlightId, String newOrigin, String newDestination) {
+		
+		Flight foundFlight = getFlight(withFlightId);
+		
+		// if found update, if not just do nothing
+		if(!foundFlight.getFlightIdentifier().equals(NOT_FOUND)) {
+			beginTransaction();
+			
+			foundFlight.updateOrigin(newOrigin);
+			foundFlight.updateDestination(newDestination);
+            
+			// use saveOrUpdate because the
+			//  object is detached 
+			mSession.saveOrUpdate(foundFlight);
+			
+			commitTransaction();
+		}
+	}
+	
+	public void deleteFlight (String withFlightId) {
+		
+		beginTransaction();
+		Query query = mSession.createQuery("delete from Flight where FLIGHT_ID = :flightid");
+		query.setParameter("flightid", withFlightId);
+		query.executeUpdate();
+		commitTransaction();
 	}
 }

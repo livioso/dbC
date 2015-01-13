@@ -47,7 +47,7 @@ public class FlightplanningControllerTest {
 		// setup test data:
 		// so every test case has the 
 		// same environment work with.
-		createFLightplanningTestEnvironment();
+		createFlightplanningTestEnvironment();
 	}
 
 	@After
@@ -101,8 +101,41 @@ public class FlightplanningControllerTest {
 	}
 	
 	@Test
-	public void testRead () {
+	public void testGetFlight () {
 		
+		Flight flight = classUnderTest.getFlight("ETD12");
+		assertEquals("ETD12", flight.getFlightIdentifier());
+		assertEquals("Zurich", flight.getOrigin());
+		assertEquals("Dubai", flight.getDestination());
+		
+		Flight flightNonExisting = classUnderTest.getFlight("Whatever");
+		assertEquals("NOT_FOUND", flightNonExisting.getFlightIdentifier());
+	}
+	
+	@Test
+	public void testUpdateFlight () {
+		
+		// lets change destination and origin
+		classUnderTest.updateFlight("ETD12", "Genf", "Doha");
+		
+		Flight updatedFlight = classUnderTest.getFlight("ETD12");
+		assertEquals("ETD12", updatedFlight.getFlightIdentifier());
+		assertEquals("Genf", updatedFlight.getOrigin());
+		assertEquals("Doha", updatedFlight.getDestination());
+		
+		// should not throw exception here
+		classUnderTest.updateFlight("NonExistingFlightId", "", "");
+	}
+	
+	@Test
+	public void testDeleteFlight () {
+		
+		// delete the flight ETD12
+		classUnderTest.deleteFlight("ETD12");
+		
+		List<Flight> allFlights = classUnderTest.getFlightAll();
+		assertTrue(allFlights.contains(new Flight("PH90102", "Zurich", "London")));
+		assertFalse(allFlights.contains(new Flight("ETD12", "Zurich", "Dubai")));
 	}
 	
 	public Session createSession () {
@@ -127,7 +160,7 @@ public class FlightplanningControllerTest {
 		return factory.openSession();	
 	}
 	
-	public void createFLightplanningTestEnvironment () {
+	public void createFlightplanningTestEnvironment () {
 		
 		// first we instantiate a few flight attendants
 		Flightattendant flightAttendedFabian = new Flightattendant("Fabian", "Affolter", "faff201402");

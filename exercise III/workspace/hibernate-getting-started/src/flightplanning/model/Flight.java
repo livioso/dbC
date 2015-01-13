@@ -8,7 +8,7 @@ import java.util.Set;
 @Entity
 @Table(name="Flights")
 public class Flight {
-
+	
 	@Id
 	@Column(name = "FLIGHT_ID")  
 	private String mFlightIdentifier;
@@ -31,12 +31,24 @@ public class Flight {
 		this.mDestination = destination;
 	}
 	
+	public void updateDestination (String newDestination) {
+		mDestination = newDestination;
+	}
+	
+	public void updateOrigin (String newOrigin) {
+		mOrigin = newOrigin;
+	}
+	
 	public String getFlightIdentifier () {
 		return mFlightIdentifier;
 	}
 	
 	public String getDestination () {
 		return mDestination;
+	}
+	
+	public String getOrigin () {
+		return mOrigin;
 	}
 	
 	public void addCrewMember (Crew crewMember) {
