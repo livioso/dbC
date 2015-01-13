@@ -135,4 +135,12 @@ public class FlightplanningController implements IFlightplanningController{
 		mSession.createQuery("delete from Crew").executeUpdate();
 		commitTransaction(); */
 	}
+	
+	public void deleteFlightAll() {
+		
+	}
+
+	public void deleteCrewAll() {
+		
+	}
 }
