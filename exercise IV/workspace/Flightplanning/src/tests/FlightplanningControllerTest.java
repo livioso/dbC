@@ -2,6 +2,7 @@ package tests;
 
 import static org.junit.Assert.*;
 
+import java.io.File;
 import java.util.List;
 import java.util.Set;
 
@@ -25,6 +26,8 @@ public class FlightplanningControllerTest {
 	
 	private FlightplanningController classUnderTest;
 	private ObjectContainer mObjectContainer;
+	
+	private final String OBJECTSTOREFILEPATH = "flightplanningTestEnvironment.data";
 	
 	@Before
 	public void setUp () {
@@ -230,7 +233,7 @@ public class FlightplanningControllerTest {
 	
 	@SuppressWarnings("deprecation")
 	public ObjectContainer createObjectContainer () {
-		return Db4o.openFile("flightplanningTestEnvironment.data");
+		return Db4o.openFile(OBJECTSTOREFILEPATH);
 	}
 	
 	public void createFlightplanningTestEnvironment () {
@@ -276,5 +279,9 @@ public class FlightplanningControllerTest {
 	
 	public void tearDownFlightplanningTestEnvironment () {
 		classUnderTest.deleteEverything();
+		
+		// always start fresh -> those just delete it
+		File databaseFile = new File(OBJECTSTOREFILEPATH);
+		databaseFile.delete();
 	}
 }

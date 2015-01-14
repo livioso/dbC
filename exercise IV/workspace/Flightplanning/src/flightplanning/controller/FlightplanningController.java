@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Set;
 
 import com.db4o.*;
+import com.db4o.query.Predicate;
+import com.db4o.query.Query;
 
 import flightplanning.model.Airplane;
 import flightplanning.model.Crew;
@@ -28,18 +30,20 @@ public class FlightplanningController implements IFlightplanningController{
 	}
 
 	public void addFlight (Flight flightToAdd) {
+		mObjectContainer.store(flightToAdd);
 		commitTransaction();
 	}
 	
 	public void addCrew (Crew crewToAdd) {
+		mObjectContainer.store(crewToAdd);
 		commitTransaction();		
 	}
 	
 	public void addAirplane (Airplane airplaneToAdd) {
+		mObjectContainer.store(airplaneToAdd);
 		commitTransaction();		
 	}
 	
-	@SuppressWarnings("unchecked")
 	public Set<Crew> getCrewOfFlight (String withFlightId) {
 		
 		Set<Crew> crewOfFlightWithId = new HashSet<>();
@@ -61,37 +65,29 @@ public class FlightplanningController implements IFlightplanningController{
 		return crewOfFlightWithId;
 	}
 	
-	@SuppressWarnings("unchecked")
 	public List<Crew> getCrewAll () {
 		
-		List<Crew> crewAll = new ArrayList<>();
-		
+		ObjectSet<Crew> crewAll = mObjectContainer.queryByExample(Crew.class);
 		return crewAll;
 	}
 	
-	@SuppressWarnings("unchecked")
 	public List<Flight> getFlightAll () {
 		
-		List<Flight> flightAll = new ArrayList<>();
-		commitTransaction();
-		
+		List<Flight> flightAll = mObjectContainer.queryByExample(Flight.class);
 		return flightAll;
 	}
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("serial")
 	public Flight getFlight (String withFlightId) {
 		
 		Flight flight = new Flight(NOT_FOUND, "NA", "NA", null);
 		
-		/*
-		beginTransaction();
-		Query query = mSession.createQuery("from Flight WHERE FLIGHT_ID = :flightid");
-		query.setParameter("flightid", withFlightId);
-		List<Flight> flightsWithId = query.list();
-		commitTransaction();
-		*/
+		List<Flight> flightsWithId = mObjectContainer.query(
+			new Predicate<Flight>() {
+			    public boolean match(Flight flight) {
+			        return flight.getFlightIdentifier() == withFlightId;
+			    }});
 		
-		List<Flight> flightsWithId = new ArrayList<>();
 		if(!flightsWithId.isEmpty()) {
 			flight = flightsWithId.get(0);
 		}
