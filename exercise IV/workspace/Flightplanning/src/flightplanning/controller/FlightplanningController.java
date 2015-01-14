@@ -77,14 +77,18 @@ public class FlightplanningController implements IFlightplanningController{
 		return flightAll;
 	}
 	
-	@SuppressWarnings("serial")
 	public Flight getFlight (String withFlightId) {
 		
 		Flight flight = new Flight(NOT_FOUND, "NA", "NA", null);
 		
 		List<Flight> flightsWithId = mObjectContainer.query(
 			new Predicate<Flight>() {
-			    public boolean match(Flight flight) {
+			    /**
+				 * 
+				 */
+				private static final long serialVersionUID = 2615422327381350324L;
+
+				public boolean match(Flight flight) {
 			        return flight.getFlightIdentifier() == withFlightId;
 			    }});
 		

@@ -73,6 +73,12 @@ public class FlightplanningControllerTest {
 		
 		// get & check all the flights
 		List<Flight> allFlights = classUnderTest.getFlightAll();
+		
+		
+		for(Flight each : allFlights) {
+			System.out.println(each.getFlightIdentifier());
+		}
+		
 				
 		assertTrue(allFlights.contains(new Flight("PH90102", "Zurich", "London", null)));
 		assertTrue(allFlights.contains(new Flight("ETD12", "Zurich", "Dubai", null)));
@@ -227,6 +233,7 @@ public class FlightplanningControllerTest {
 		classUnderTest.deleteFlight("ETD12");
 		
 		List<Flight> allFlights = classUnderTest.getFlightAll();
+		
 		assertTrue(allFlights.contains(new Flight("PH90102", "Zurich", "London", null)));
 		assertFalse(allFlights.contains(new Flight("ETD12", "Zurich", "Dubai", null)));
 	}

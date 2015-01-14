@@ -59,6 +59,13 @@ public class Flight {
 	}
 	
 	@Override
+	public int hashCode () {
+        int hash = 1;
+        hash = hash * 17 + mFlightIdentifier.hashCode();
+        return hash;
+	}
+	
+	@Override
 	public boolean equals(Object obj) {
 	       
 		if (!(obj instanceof Flight)) {
