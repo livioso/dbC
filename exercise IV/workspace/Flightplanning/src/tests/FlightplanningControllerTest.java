@@ -242,12 +242,11 @@ public class FlightplanningControllerTest {
 		classUnderTest.addCrew(ourBest);
 		assertEquals("unknown", ourBest.getPilotLicenceNumber());
 		
-		ourBest.updatePilotLicenceNumber("ABC");
-		assertEquals("ABC", ourBest.getPilotLicenceNumber());
+		classUnderTest.updatePilotLicenceNumber("007", "ABC");
 		
-		// check that this change also got persisted in the db
-		int index = classUnderTest.getCrewAll().indexOf(ourBest);
-		Pilot hopefullyOurBest = (Pilot) classUnderTest.getCrewAll().get(index);
+		// check that this change also got persisted in the DB
+		int indexOfOurBest = classUnderTest.getCrewAll().indexOf(ourBest);
+		Pilot hopefullyOurBest = (Pilot) classUnderTest.getCrewAll().get(indexOfOurBest);
 		assertEquals("ABC", hopefullyOurBest.getPilotLicenceNumber());
 	}
 	
