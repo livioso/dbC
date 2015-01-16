@@ -86,15 +86,16 @@ public class FlightplanningController implements IFlightplanningController{
 		return flightAll;
 	}
 	
+	@SuppressWarnings("serial")
 	public Flight getFlight (String withFlightId) {
 		
 		Flight flight = new Flight(NOT_FOUND, "NA", "NA", null);
 		
 		List<Flight> flightsWithId = mObjectContainer.query(new Predicate<Flight>() {
-            public boolean match(Flight event) {
-            return event.getFlightIdentifier().equals(withFlightId);
+            public boolean match(Flight flight) {
+            	return flight.getFlightIdentifier().equals(withFlightId);
             }
-           });
+		});
 		
 		if(!flightsWithId.isEmpty()) {
 			flight = (Flight) flightsWithId.get(0);
