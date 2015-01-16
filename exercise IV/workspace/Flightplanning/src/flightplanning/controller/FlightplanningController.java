@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.db4o.*;
+import com.db4o.query.Predicate;
 
 import flightplanning.model.Airplane;
 import flightplanning.model.Crew;
@@ -89,8 +90,11 @@ public class FlightplanningController implements IFlightplanningController{
 		
 		Flight flight = new Flight(NOT_FOUND, "NA", "NA", null);
 		
-		Flight exampleFlight = new Flight(withFlightId, "", "", null);
-		List<Flight> flightsWithId = mObjectContainer.queryByExample(exampleFlight);
+		List<Flight> flightsWithId = mObjectContainer.query(new Predicate<Flight>() {
+            public boolean match(Flight event) {
+            return event.getFlightIdentifier().equals(withFlightId);
+            }
+           });
 		
 		if(!flightsWithId.isEmpty()) {
 			flight = (Flight) flightsWithId.get(0);
