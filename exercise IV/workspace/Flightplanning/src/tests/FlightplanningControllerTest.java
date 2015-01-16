@@ -216,8 +216,15 @@ public class FlightplanningControllerTest {
 		// add a new airplane (1 DB call)
 		classUnderTest.addFlight(newFlight);
 		
+		// Precondition: No. of flights is <1>
+		// make sure we don't just add another flight (1 DB call)
+		assertEquals(1, classUnderTest.getFlightAll().size());
+		
 		// lets change destination and origin of this flight (2 DB call)
 		classUnderTest.updateFlight("CH021A", "Genf", "Doha");
+		
+		// Precondition: No. of flights is unchanged
+		assertEquals(1, classUnderTest.getFlightAll().size());
 		
 		// lets change destination and origin of this flight (1 DB call)
 		Flight updatedFlight = classUnderTest.getFlight("CH021A");

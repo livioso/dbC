@@ -43,19 +43,16 @@ public class FlightplanningController implements IFlightplanningController{
 		commitTransaction();		
 	}
 	
+	@SuppressWarnings("serial")
 	public Set<Crew> getCrewOfFlight (String withFlightId) {
 		
 		Set<Crew> crewOfFlightWithId = new HashSet<>();
 		
-		/*beginTransaction();
-		// query and search for particular flight
-		Query query = mSession.createQuery("from Flight WHERE FLIGHT_ID = :flightid");
-		query.setParameter("flightid", withFlightId);
-		List<Flight> flightsWithId = query.list();
-		commitTransaction();
-		*/
-		
-		List<Flight> flightsWithId = new ArrayList<>();;
+		List<Flight> flightsWithId = mObjectContainer.query(new Predicate<Flight>() {
+            public boolean match(Flight flight) {
+            	return flight.getFlightIdentifier().equals(withFlightId);
+            }
+		});
 		
 		if(!flightsWithId.isEmpty()) {
 			crewOfFlightWithId = flightsWithId.get(0).getFlightCrew();
@@ -111,41 +108,50 @@ public class FlightplanningController implements IFlightplanningController{
 		// if found update, if not just do nothing
 		if(!foundFlight.getFlightIdentifier().equals(NOT_FOUND)) {
 			
-			/*beginTransaction();
-			
 			foundFlight.updateOrigin(newOrigin);
 			foundFlight.updateDestination(newDestination);
-            
-			// use saveOrUpdate because the
-			//  object is detached 
-			mSession.saveOrUpdate(foundFlight);
-			
-			commitTransaction(); */
+		
+			mObjectContainer.store(foundFlight);
 		}
 	}
 	
+	@SuppressWarnings("serial")
 	public void deleteFlight (String withFlightId) {
 		
-		/*Query query = mSession.createQuery("delete from Flight where FLIGHT_ID = :flightid");
-		query.setParameter("flightid", withFlightId);
-		query.executeUpdate();
-		commitTransaction(); */
+		List<Flight> flightsWithId = mObjectContainer.query(new Predicate<Flight>() {
+            public boolean match(Flight flight) {
+            	return flight.getFlightIdentifier().equals(withFlightId);
+            }
+		});
 		
+		if(!flightsWithId.isEmpty()) {
+			// delete the flight if found 
+			// otherwise simply do nothing
+			mObjectContainer.delete(flightsWithId.get(0));
+		}
+
 	}
 	
 	public void deleteEverything () {
 		
-		/*beginTransaction();
-		mSession.createQuery("delete from Flight").executeUpdate();
-		mSession.createQuery("delete from Crew").executeUpdate();
-		commitTransaction(); */
+		deleteFlightAll();
+		deleteCrewAll();
+	
 	}
 	
 	public void deleteFlightAll() {
 		
+		for(Object each : mObjectContainer.queryByExample(Flight.class)) {
+			mObjectContainer.delete(each);
+		}
+		
 	}
 
 	public void deleteCrewAll() {
+		
+		for(Object each : mObjectContainer.queryByExample(Crew.class)) {
+			mObjectContainer.delete(each);
+		}
 		
 	}
 }
