@@ -240,6 +240,8 @@ public class FlightplanningControllerTest {
 	
 	@SuppressWarnings("deprecation")
 	public ObjectContainer createObjectContainer () {
+		
+		// fix me: openFile is deprecated :(
 		return Db4o.openFile(OBJECTSTOREFILEPATH);
 	}
 	
@@ -271,7 +273,7 @@ public class FlightplanningControllerTest {
 		flightZurichDubai.addCrewMember(flightAttendedAlex);
 		flightZurichDubai.addCrewMember(pilotMarius);
 		
-		// ... and let Hibernate persist those objects
+		// ... and let persist those objects
 		classUnderTest.addFlight(flightZurichLondon);
 		classUnderTest.addFlight(flightZurichDubai);
 		classUnderTest.addFlight(flightZurichLondon);
@@ -287,7 +289,7 @@ public class FlightplanningControllerTest {
 	public void tearDownFlightplanningTestEnvironment () {
 		classUnderTest.deleteEverything();
 		
-		// always start fresh -> those just delete it
+		// always start fresh -> thus just delete it
 		File databaseFile = new File(OBJECTSTOREFILEPATH);
 		databaseFile.delete();
 	}

@@ -7,8 +7,6 @@ public class Airplane {
 	private String mAircraftOwner;
 	
 	private String mAircraftType;
-	
-    private Flight mFlight;
 		
 	public Airplane(String aircraftRegistrationID, String aircraftOwner, String aircraftType) {
 		mAircraftRegistrationID = aircraftRegistrationID;
