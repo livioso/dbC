@@ -9,6 +9,7 @@ import org.hibernate.*;
 import flightplanning.model.Airplane;
 import flightplanning.model.Crew;
 import flightplanning.model.Flight;
+import flightplanning.model.Pilot;
 
 public class FlightplanningController implements IFlightplanningController{
 	
@@ -129,7 +130,7 @@ public class FlightplanningController implements IFlightplanningController{
 			foundFlight.updateDestination(newDestination);
             
 			// use saveOrUpdate because the
-			//  object is detached 
+			// object is detached 
 			mSession.saveOrUpdate(foundFlight);
 			
 			commitTransaction();
@@ -137,8 +138,26 @@ public class FlightplanningController implements IFlightplanningController{
 	}
 	
 	@Override
-	public void updatePilotLicenceNumber(String withEmployeeId, String newPilotLicenceNumber) {
+	@SuppressWarnings("unchecked")
+	public void updatePilotLicenceNumber (String withEmployeeId, String newPilotLicenceNumber) {
 		
+		beginTransaction();
+		
+		Query query = mSession.createQuery("from Pilot WHERE EMPLOYEE_ID = :employeeId");
+		query.setParameter("employeeId", withEmployeeId);
+		List<Pilot> pilotsWithId = query.list();
+		
+		if(!pilotsWithId.isEmpty()) {
+			
+			Pilot toUpdate = pilotsWithId.get(0);
+			toUpdate.updatePilotLicenceNumber(newPilotLicenceNumber);
+            
+			// use saveOrUpdate because the
+			// object is detached 
+			mSession.saveOrUpdate(toUpdate);
+		}
+		
+		commitTransaction();
 	}
 	
 	public void deleteFlight (String withFlightId) {
@@ -151,12 +170,14 @@ public class FlightplanningController implements IFlightplanningController{
 	}
 	
 	public void deleteFlightAll () {
+		
 		beginTransaction();
 		mSession.createQuery("delete from Flight").executeUpdate();
 		commitTransaction();
 	}
 	
 	public void deleteCrewAll () {
+		
 		beginTransaction();
 		mSession.createQuery("delete from Crew").executeUpdate();
 		commitTransaction();
