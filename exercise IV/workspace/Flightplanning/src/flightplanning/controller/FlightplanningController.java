@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Set;
 
 import com.db4o.*;
-import com.db4o.query.Predicate;
-import com.db4o.query.Query;
 
 import flightplanning.model.Airplane;
 import flightplanning.model.Crew;
