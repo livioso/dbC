@@ -67,13 +67,23 @@ public class FlightplanningController implements IFlightplanningController{
 	
 	public List<Crew> getCrewAll () {
 		
-		ObjectSet<Crew> crewAll = mObjectContainer.queryByExample(Crew.class);
+		List<Crew> crewAll = new ArrayList<>();
+
+		for(Object each : mObjectContainer.queryByExample(Crew.class)) {
+			crewAll.add((Crew) each);
+		}
+		
 		return crewAll;
 	}
 	
 	public List<Flight> getFlightAll () {
 		
-		List<Flight> flightAll = mObjectContainer.queryByExample(Flight.class);
+		List<Flight> flightAll = new ArrayList<>();
+
+		for(Object each : mObjectContainer.queryByExample(Flight.class)) {
+			flightAll.add((Flight) each);
+		}
+		
 		return flightAll;
 	}
 	
@@ -81,19 +91,11 @@ public class FlightplanningController implements IFlightplanningController{
 		
 		Flight flight = new Flight(NOT_FOUND, "NA", "NA", null);
 		
-		List<Flight> flightsWithId = mObjectContainer.query(
-			new Predicate<Flight>() {
-			    /**
-				 * 
-				 */
-				private static final long serialVersionUID = 2615422327381350324L;
-
-				public boolean match(Flight flight) {
-			        return flight.getFlightIdentifier() == withFlightId;
-			    }});
+		Flight exampleFlight = new Flight(withFlightId, "", "", null);
+		List<Flight> flightsWithId = mObjectContainer.queryByExample(exampleFlight);
 		
 		if(!flightsWithId.isEmpty()) {
-			flight = flightsWithId.get(0);
+			flight = (Flight) flightsWithId.get(0);
 		}
 		
 		return flight;
