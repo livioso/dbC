@@ -136,6 +136,11 @@ public class FlightplanningController implements IFlightplanningController{
 		}
 	}
 	
+	@Override
+	public void updatePilotLicenceNumber(String withEmployeeId, String newPilotLicenceNumber) {
+		
+	}
+	
 	public void deleteFlight (String withFlightId) {
 		
 		beginTransaction();
