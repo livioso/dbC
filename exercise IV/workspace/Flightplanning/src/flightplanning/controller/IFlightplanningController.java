@@ -17,6 +17,7 @@ public interface IFlightplanningController {
 	public List<Flight> getFlightAll ();
 	public Flight getFlight (String withFlightId);
 	public void updateFlight (String withFlightId, String newOrigin, String newDestination);
+	public void updatePilotLicenceNumber (String withEmployeeId, String newPilotLicenceNumber);
 	public void deleteFlight (String withFlightId);
 	public void deleteFlightAll ();
 	public void deleteCrewAll ();

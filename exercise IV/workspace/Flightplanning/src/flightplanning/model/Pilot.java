@@ -8,7 +8,7 @@ public class Pilot extends Crew {
 		super(firstName, lastName, employeeID);
 	}
 
-	public void setPilotLicenceNumber (String pilotLicenceNumber) {
+	public void updatePilotLicenceNumber (String pilotLicenceNumber) {
 		mPilotLicenceNumber = pilotLicenceNumber;
 	}
 	

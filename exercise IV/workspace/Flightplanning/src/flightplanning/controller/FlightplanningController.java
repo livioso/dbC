@@ -11,6 +11,7 @@ import com.db4o.query.Predicate;
 import flightplanning.model.Airplane;
 import flightplanning.model.Crew;
 import flightplanning.model.Flight;
+import flightplanning.model.Pilot;
 
 public class FlightplanningController implements IFlightplanningController{
 	
@@ -112,6 +113,24 @@ public class FlightplanningController implements IFlightplanningController{
 			foundFlight.updateDestination(newDestination);
 		
 			mObjectContainer.store(foundFlight);
+		}
+	}
+	
+	@SuppressWarnings("serial")
+	public void updatePilotLicenceNumber (String withEmployeeId, String newPilotLicenceNumber) {
+		
+		List<Pilot> pilotsWithId = mObjectContainer.query(new Predicate<Pilot>() {
+            public boolean match(Pilot pilot) {
+            	return pilot.getEmployeeID().equals(withEmployeeId);
+            }
+		});
+		
+		if(!pilotsWithId.isEmpty()) {
+			
+			Pilot pilotToUpdate = pilotsWithId.get(0);
+			pilotToUpdate.updatePilotLicenceNumber(newPilotLicenceNumber);
+		
+			mObjectContainer.store(pilotToUpdate);
 		}
 	}
 	

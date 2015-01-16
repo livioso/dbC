@@ -234,6 +234,24 @@ public class FlightplanningControllerTest {
 	}
 	
 	@Test
+	public void testUpdatePilotLicenceNumber () {
+		
+		Pilot ourBest = new Pilot("James", "Bond", "007");
+		
+		// add him to the data store 
+		classUnderTest.addCrew(ourBest);
+		assertEquals("unknown", ourBest.getPilotLicenceNumber());
+		
+		ourBest.updatePilotLicenceNumber("ABC");
+		assertEquals("ABC", ourBest.getPilotLicenceNumber());
+		
+		// check that this change also got persisted in the db
+		int index = classUnderTest.getCrewAll().indexOf(ourBest);
+		Pilot hopefullyOurBest = (Pilot) classUnderTest.getCrewAll().get(index);
+		assertEquals("ABC", hopefullyOurBest.getPilotLicenceNumber());
+	}
+	
+	@Test
 	public void testDeleteFlight () {
 		
 		// delete the flight ETD12
